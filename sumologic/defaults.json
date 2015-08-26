@@ -2,6 +2,6 @@
 {
     "accessid": "access_id",
     "accesskey": "access_key",
-    "sources": "/sumo/sumo.json"
+    "sources": "/sumo/sources.json"
 }
 {% endload %}

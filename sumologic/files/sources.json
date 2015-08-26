@@ -1,0 +1,8 @@
+{
+  "api.version": "v1",
+  "installer": {
+    "name": "None",
+    "order": 1000,
+    "description": "Do not install sources"
+  }
+}

@@ -10,6 +10,13 @@
     - group: root
     - mode: 555
 
+/sumo/sources.json:
+  file.managed:
+    - user: root
+    - group: root
+    - mode: 400
+    - source: salt://sumologic/files/sources.json
+
 /sumo/sumo.config:
   file.managed:
     - user: root
