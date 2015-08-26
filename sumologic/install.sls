@@ -17,7 +17,7 @@
     - mode: 400
     - source: salt://sumologic/files/sources.json
 
-/sumo/sumo.config:
+/etc/sumo.conf:
   file.managed:
     - user: root
     - group: root
@@ -44,3 +44,9 @@ sumologic_installer:
       - file: /opt/sumo64.sh
       - file: /opt/SumoCollector
       - file: /sumo/sumo.config
+
+/etc/init.d/sumologic_collector:
+  file.symlink:
+    - target: /opt/SumoCollector/collector
+    - requires:
+      - file: sumologic_installer
