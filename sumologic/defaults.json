@@ -1,0 +1,7 @@
+{% load_json as rawmap %}
+{
+    "accessid": "access_id",
+    "accesskey": "access_key",
+    "sources": "/sumo/sumo.json"
+}
+{% endload %}

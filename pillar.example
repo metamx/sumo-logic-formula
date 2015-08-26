@@ -1,0 +1,5 @@
+## https://service.sumologic.com/help/Using_sumo.conf.htm
+#
+sumologic_install:
+  accessid: 'access_id'
+  accesskey: 'accesskey'

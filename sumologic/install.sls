@@ -10,6 +10,16 @@
     - group: root
     - mode: 555
 
+/sumo/sumo.config:
+  file.managed:
+    - user: root
+    - group: root
+    - mode: 400
+    - template: jinja
+    - source: salt://sumologic/files/sumo.config
+    - requires:
+      - file: /sumo
+
 sumologic_installer:
   file.managed:
     - name: /opt/sumo64.sh
@@ -26,3 +36,4 @@ sumologic_installer:
     - requires:
       - file: /opt/sumo64.sh
       - file: /opt/SumoCollector
+      - file: /sumo/sumo.config
