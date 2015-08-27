@@ -3,3 +3,14 @@
 sumologic_install:
   accessid: 'access_id'
   accesskey: 'accesskey'
+
+sumologic:
+  file_sources:
+    - auth:
+      name: auth_log
+      path: "/var/log/auth*"
+      category: linux_apps_logs
+    - local_syslog:
+      name: syslog
+      path: "/var/log/syslog"
+      category: linux_apps_logs

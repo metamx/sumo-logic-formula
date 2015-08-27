@@ -1,8 +1,24 @@
+{% set sumo_tz = salt['pillar.get']('sumologic:timezone', "America/Los_Angeles") %}
+{% set sources = salt['pillar.get']('sumologic:file_sources', {}) %}
 {
   "api.version": "v1",
-  "installer": {
-    "name": "None",
-    "order": 1000,
-    "description": "Do not install sources"
+  "sources": [
+    {%  for source in sources %}
+     {
+     "sourceType" : "LocalFile",
+     "name": "{{ source["name"]}}",
+     "pathExpression": "{{ source["path"]}}",
+     "category": "{{source["category"]}}",
+     "hostName": "{{salt['grains.get']('id')}}",
+     "useAutolineMatching": false,
+     "multilineProcessingEnabled": false,
+     "automaticDateParsing": true,
+     "timeZone": "{{ sumo_tz }}",
+     "forceTimeZone": false,
+     "defaultDateFormat": "dd/MMM/yyyy HH:mm:ss",
+     "filters": [],
+     "blacklist": []
+     }{% if not loop.last %},{% endif %}
+    {% endfor %}
+    ]
   }
-}
