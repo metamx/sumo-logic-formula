@@ -1,9 +1,11 @@
 {% set sumo_tz = salt['pillar.get']('sumologic:timezone', "America/Los_Angeles") %}
-{% set sources = salt['pillar.get']('sumologic:file_sources', {}) %}
+{% set f_sources = salt['pillar.get']('sumologic:file_sources', {}) %}
+{% set s_sources = salt['pillar.get']('sumologic:script_sources') %}
+
 {
   "api.version": "v1",
   "sources": [
-    {%  for source in sources %}
+    {% for source in f_sources %}
      {
      "sourceType" : "LocalFile",
      "name": "{{ source["name"]}}",
@@ -20,5 +22,27 @@
      "blacklist": []
      }{% if not loop.last %},{% endif %}
     {% endfor %}
+    {% if s_sources %}
+    ,
+    {% for source in s_sources %}
+    {
+    "sourceType" : "Script",
+    "commands": {{ source.commands}},
+    "cronExpression": "{{ source.cronExpression}}",
+    "workingDir": "/tmp",
+    "timeout": 60,
+    "name" : "{{ source.name }}",
+    "description" : "{{ source.description }}",
+    "category" : "{{ source.category}}",
+    "timeZone": "{{ sumo_tz }}",
+    "automaticDateParsing": true,
+    "multilineProcessingEnabled": true,
+    "useAutolineMatching": true,
+    "manualPrefixRegexp": "",
+    "forceTimeZone": false,
+    "defaultDateFormat": "dd/MMM/yyyy HH:mm:ss"
+    }{% if not loop.last %},{% endif %}
+    {% endfor %}
+    {% endif %}
     ]
   }

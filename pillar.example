@@ -14,3 +14,10 @@ sumologic:
       name: syslog
       path: "/var/log/syslog"
       category: linux_apps_logs
+  script_sources:
+    - script1:
+      name: script1
+      description: some description
+      commands: ["/bin/foo", "/bin/bar"]
+      cronExpression: "* * * * * "
+      category: scripts
