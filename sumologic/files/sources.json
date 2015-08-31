@@ -27,7 +27,7 @@
     {% for source in s_sources %}
     {
     "sourceType" : "Script",
-    "commands": {{ source.commands}},
+    "commands": {{ source.commands | json() }},
     "cronExpression": "{{ source.cronExpression}}",
     "workingDir": "/tmp",
     "timeout": 60,
