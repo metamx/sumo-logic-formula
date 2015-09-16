@@ -32,7 +32,7 @@ sumologic_installer:
   file.managed:
     - name: /opt/sumo64.sh
     - source: https://collectors.sumologic.com/rest/download/linux/64
-    - source_hash: md5=dbfb5d2fa28def263b9560a7f9e2f19a
+    - source_hash: md5=3271c63d8c5a035f031b4d9a23d0d1f5
     - user: root
     - group: root
     - mode: 544
