@@ -2,8 +2,8 @@
 {
     "accessid": "access_id",
     "accesskey": "access_key",
-    "sources": "/sumo/sources.json"
-    "ephemeral": "false"
-    "name": {{ salt['grains.get']('nodename') }}
+    "sources": "/sumo/sources.json",
+    "ephemeral": "false",
+    "name": "{{ salt['grains.get']('nodename') }}"
 }
 {% endload %}
