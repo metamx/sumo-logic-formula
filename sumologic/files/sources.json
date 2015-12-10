@@ -18,8 +18,8 @@
      "timeZone": "{{ sumo_tz }}",
      "forceTimeZone": false,
      "defaultDateFormat": "{{source.get('defaultDateFormat', 'dd/MMM/yyyy HH:mm:ss')}}",
-     "filters": {{source.get('filters',[]}},
-     "blacklist": {{source.get('blacklist',[]}}
+     "filters": {{source.get('filters',[])}},
+     "blacklist": {{source.get('blacklist',[])}}
      }{% if not loop.last %},{% endif %}
     {% endfor %}
     {% if s_sources %}
