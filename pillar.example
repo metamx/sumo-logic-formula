@@ -6,17 +6,14 @@ sumologic_install:
 
 sumologic:
   file_sources:
-    - auth:
-      name: auth_log
+    auth_log:
       path: "/var/log/auth*"
       category: linux_apps_logs
-    - local_syslog:
-      name: syslog
+    syslog:
       path: "/var/log/syslog"
       category: linux_apps_logs
   script_sources:
-    - script1:
-      name: script1
+    script1:
       description: some description
       commands: ["/bin/foo", "/bin/bar"]
       cronExpression: "* * * * * "
