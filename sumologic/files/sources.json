@@ -5,10 +5,10 @@
 {
   "api.version": "v1",
   "sources": [
-    {% for source in f_sources %}
+    {% for sourcename,source in f_sources.iteritems() %}
      {
      "sourceType" : "LocalFile",
-     "name": "{{ source["name"]}}",
+     "name": "{{ sourcename }}",
      "pathExpression": "{{ source["path"]}}",
      "category": "{{source["category"]}}",
      "hostName": "{{salt['grains.get']('id')}}",
@@ -24,14 +24,14 @@
     {% endfor %}
     {% if s_sources %}
     ,
-    {% for source in s_sources %}
+    {% for sourcename,source in s_sources.iteritems() %}
     {
     "sourceType" : "Script",
     "commands": {{ source.commands | json() }},
     "cronExpression": "{{ source.cronExpression}}",
     "workingDir": "/tmp",
     "timeout": 60,
-    "name" : "{{ source.name }}",
+    "name" : "{{ sourcename }}",
     "description" : "{{ source.description }}",
     "category" : "{{ source.category}}",
     "timeZone": "{{ sumo_tz }}",
