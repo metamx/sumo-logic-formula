@@ -12,14 +12,14 @@
      "pathExpression": "{{ source["path"]}}",
      "category": "{{source["category"]}}",
      "hostName": "{{salt['grains.get']('id')}}",
-     "useAutolineMatching": false,
-     "multilineProcessingEnabled": false,
-     "automaticDateParsing": true,
+     "useAutolineMatching": "{{source.get('useAutolineMatching', 'false')}}",
+     "multilineProcessingEnabled": "{{source.get('multilineProcessingEnabled', 'false')}}",
+     "automaticDateParsing": "{{source.get('automaticDateParsing', 'true')}}",
      "timeZone": "{{ sumo_tz }}",
      "forceTimeZone": false,
-     "defaultDateFormat": "dd/MMM/yyyy HH:mm:ss",
-     "filters": [],
-     "blacklist": []
+     "defaultDateFormat": "{{source.get('defaultDateFormat', 'dd/MMM/yyyy HH:mm:ss')}}",
+     "filters": {{source.get('filters',[]}},
+     "blacklist": {{source.get('blacklist',[]}}
      }{% if not loop.last %},{% endif %}
     {% endfor %}
     {% if s_sources %}
