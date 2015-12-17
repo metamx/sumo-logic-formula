@@ -1,68 +1,15 @@
 {% set sumo_tz = salt['pillar.get']('sumologic:timezone', "America/Los_Angeles") %}
-{% set f_sources = salt['pillar.get']('sumologic:file_sources', {}) %}
-{% set s_sources = salt['pillar.get']('sumologic:script_sources') %}
-{% set syslog_sources = salt['pillar.get']('sumologic:syslog_sources') %}
+{% set sources = salt['pillar.get']('sumologic:sources', {}) %}
 
 {
   "api.version": "v1",
   "sources": [
-    {% for sourcename,source in syslog_sources.iteritems() %}
+    {% for sourcename,source in sources.iteritems() %}
     {
-     "sourceType": "Syslog
      "name": "{{ sourcename }}",
-     "protocol": "{{ source.get("protocol", "UDP") }}",
-     "port": "{{ source.get("port", "514") }}",
-     "category": "{{source["category"]}}",
-     "useAutolineMatching": "{{source.get('useAutolineMatching', 'false')}}",
-     "multilineProcessingEnabled": "{{source.get('multilineProcessingEnabled', 'false')}}",
-     "automaticDateParsing": "{{source.get('automaticDateParsing', 'true')}}",
-     "timeZone": "{{ sumo_tz }}",
-     "forceTimeZone": false,
-     "defaultDateFormat": "{{source.get('defaultDateFormat', 'dd/MMM/yyyy HH:mm:ss')}}",
-     "filters": {{source.get('filters',[])}},
-     "blacklist": {{source.get('blacklist',[])}}
-     }{% if not loop.last %},{% endif %}
-    {% endfor %}
-    {% if (syslog_sources or s_sources) and f_sources %}
-    ,
-    {% endif %}
-    {% for sourcename,source in f_sources.iteritems() %}
-     {
-     "sourceType" : "LocalFile",
-     "name": "{{ sourcename }}",
-     "pathExpression": "{{ source["path"]}}",
-     "category": "{{source["category"]}}",
-     "hostName": "{{salt['grains.get']('id')}}",
-     "useAutolineMatching": "{{source.get('useAutolineMatching', 'false')}}",
-     "multilineProcessingEnabled": "{{source.get('multilineProcessingEnabled', 'false')}}",
-     "automaticDateParsing": "{{source.get('automaticDateParsing', 'true')}}",
-     "timeZone": "{{ sumo_tz }}",
-     "forceTimeZone": false,
-     "defaultDateFormat": "{{source.get('defaultDateFormat', 'dd/MMM/yyyy HH:mm:ss')}}",
-     "filters": {{source.get('filters',[])}},
-     "blacklist": {{source.get('blacklist',[])}}
-     }{% if not loop.last %},{% endif %}
-    {% endfor %}
-    {% if (syslog_sources or f_sources) and s_sources %}
-    ,
-    {% endif %}
-    {% for sourcename,source in s_sources.iteritems() %}
-    {
-    "sourceType" : "Script",
-    "commands": {{ source.commands | json() }},
-    "cronExpression": "{{ source.cronExpression}}",
-    "workingDir": "/tmp",
-    "timeout": 60,
-    "name" : "{{ sourcename }}",
-    "description" : "{{ source.description }}",
-    "category" : "{{ source.category}}",
-    "timeZone": "{{ sumo_tz }}",
-    "automaticDateParsing": true,
-    "multilineProcessingEnabled": true,
-    "useAutolineMatching": true,
-    "manualPrefixRegexp": "",
-    "forceTimeZone": false,
-    "defaultDateFormat": "dd/MMM/yyyy HH:mm:ss"
+     {% for k,v in source.iteritems %}
+     "{{k}}": {% if v is string %}"{{v}}"{% else %}{{v}}{% endif %}}
+     {% if not loop.last %},{% endif %}
     }{% if not loop.last %},{% endif %}
     {% endfor %}
     ]
