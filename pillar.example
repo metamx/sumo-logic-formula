@@ -5,15 +5,17 @@ sumologic_install:
   accesskey: 'accesskey'
 
 sumologic:
-  file_sources:
+  sources:
     auth_log:
-      path: "/var/log/auth*"
+      sourceType: LocalFile
+      pathExpression: "/var/log/auth*"
       category: linux_apps_logs
     syslog:
-      path: "/var/log/syslog"
+      sourceType: LocalFile
+      pathExpression: "/var/log/syslog"
       category: linux_apps_logs
-  script_sources:
     script1:
+      sourceType: Script
       description: some description
       commands: ["/bin/foo", "/bin/bar"]
       cronExpression: "* * * * * "
