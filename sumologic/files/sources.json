@@ -1,10 +1,31 @@
 {% set sumo_tz = salt['pillar.get']('sumologic:timezone', "America/Los_Angeles") %}
 {% set f_sources = salt['pillar.get']('sumologic:file_sources', {}) %}
 {% set s_sources = salt['pillar.get']('sumologic:script_sources') %}
+{% set syslog_sources = salt['pillar.get']('sumologic:syslog_sources') %}
 
 {
   "api.version": "v1",
   "sources": [
+    {% for sourcename,source in syslog_sources.iteritems() %}
+    {
+     "sourceType": "Syslog
+     "name": "{{ sourcename }}",
+     "protocol": "{{ source.get("protocol", "UDP") }}",
+     "port": "{{ source.get("port", "514") }}",
+     "category": "{{source["category"]}}",
+     "useAutolineMatching": "{{source.get('useAutolineMatching', 'false')}}",
+     "multilineProcessingEnabled": "{{source.get('multilineProcessingEnabled', 'false')}}",
+     "automaticDateParsing": "{{source.get('automaticDateParsing', 'true')}}",
+     "timeZone": "{{ sumo_tz }}",
+     "forceTimeZone": false,
+     "defaultDateFormat": "{{source.get('defaultDateFormat', 'dd/MMM/yyyy HH:mm:ss')}}",
+     "filters": {{source.get('filters',[])}},
+     "blacklist": {{source.get('blacklist',[])}}
+     }{% if not loop.last %},{% endif %}
+    {% endfor %}
+    {% if (syslog_sources or s_sources) and f_sources %}
+    ,
+    {% endif %}
     {% for sourcename,source in f_sources.iteritems() %}
      {
      "sourceType" : "LocalFile",
@@ -22,8 +43,9 @@
      "blacklist": {{source.get('blacklist',[])}}
      }{% if not loop.last %},{% endif %}
     {% endfor %}
-    {% if s_sources %}
+    {% if (syslog_sources or f_sources) and s_sources %}
     ,
+    {% endif %}
     {% for sourcename,source in s_sources.iteritems() %}
     {
     "sourceType" : "Script",
@@ -43,6 +65,5 @@
     "defaultDateFormat": "dd/MMM/yyyy HH:mm:ss"
     }{% if not loop.last %},{% endif %}
     {% endfor %}
-    {% endif %}
     ]
   }
