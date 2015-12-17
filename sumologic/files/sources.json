@@ -8,7 +8,7 @@
     {
      "name": "{{ sourcename }}",
      {% for k,v in source.iteritems() %}
-     "{{k}}": {% if v is string %}"{{v}}"{% else %}{{v}}{% endif %}}
+     "{{k}}": {% if v is string %}"{{v}}"{% else %}{{v}}{% endif %}
      {% if not loop.last %},{% endif %}
      {% endfor %}
     }{% if not loop.last %},{% endif %}
