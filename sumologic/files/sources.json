@@ -1,15 +1,14 @@
-{{
 import json
 
-sumo_tz = salt['pillar.get']('sumologic:timezone', "America/Los_Angeles")
-sources = salt['pillar.get']('sumologic:sources', {})
+sumo_tz = __salt__['pillar.get']('sumologic:timezone', "America/Los_Angeles")
+sources = __salt__['pillar.get']('sumologic:sources', {})
 
 config = {
   api.version: "v1",
   collector: {
     collectorType: "Installable",
     description: "An installed collector",
-    targetCPU: salt['pillar.get']('sumologic_install:targetCPU', 10)
+    targetCPU: __salt__['pillar.get']('sumologic_install:targetCPU', 10)
   },
   sources: []
 }
@@ -19,9 +18,6 @@ for sourcename,source in sources.iteritems():
     tmp = {name: sourcename}
     for k,v in source.iteritems():
       tmp[k] = v
-    pass
     config['sources'].append(tmp)
-  pass
-pass }}
 
-{{=json.dumps(config, sort_keys=True, indent=4) }}
+json.dumps(config, sort_keys=True, indent=4)
