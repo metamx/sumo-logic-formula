@@ -1,14 +1,14 @@
 import json
 
-sumo_tz = __salt__['pillar.get']('sumologic:timezone', "America/Los_Angeles")
-sources = __salt__['pillar.get']('sumologic:sources', {})
+sumo_tz = salt['pillar.get']('sumologic:timezone', "America/Los_Angeles")
+sources = salt['pillar.get']('sumologic:sources', {})
 
 config = {
   api.version: "v1",
   collector: {
     collectorType: "Installable",
     description: "An installed collector",
-    targetCPU: __salt__['pillar.get']('sumologic_install:targetCPU', 10)
+    targetCPU: salt['pillar.get']('sumologic_install:targetCPU', 10)
   },
   sources: []
 }
