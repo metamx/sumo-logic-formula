@@ -9,7 +9,7 @@
     - user: root
     - group: root
     - mode: 400
-    - template: wempy
+    - template: py
     - source: salt://sumologic/files/sources.json
 
 /etc/sumo.conf:
