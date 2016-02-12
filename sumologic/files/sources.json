@@ -1,23 +1,27 @@
-{% set sumo_tz = salt['pillar.get']('sumologic:timezone', "America/Los_Angeles") %}
-{% set sources = salt['pillar.get']('sumologic:sources', {}) %}
+{{
+import json
 
-{
-  "api.version": "v1",
-  "collector":{
-    "collectorType": "Installable",
-    "description": "An installed collector",
-    "targetCPU": {{ salt['pillar.get']('sumologic_install:targetCPU', 10) }}
-  "sources": [
-    {% for sourcename,source in sources.iteritems() -%}
-    {% if source is mapping -%}
-    {
-     "name": "{{ sourcename }}",
-     {% for k,v in source.iteritems() -%}
-     "{{k}}": {% if v is string %}"{{v}}"{% else %}{{v}}{% endif %}
-     {%- if not loop.last %},{% endif %}
-     {% endfor %}
-    }{% if not loop.last %},{% endif %}
-    {% endif %}
-    {% endfor %}
-    ]
-  }
+sumo_tz = salt['pillar.get']('sumologic:timezone', "America/Los_Angeles")
+sources = salt['pillar.get']('sumologic:sources', {})
+
+config = {
+  api.version: "v1",
+  collector: {
+    collectorType: "Installable",
+    description: "An installed collector",
+    targetCPU: salt['pillar.get']('sumologic_install:targetCPU', 10)
+  },
+  sources: []
+}
+
+for sourcename,source in sources.iteritems():
+  if source is mapping:
+    tmp = {name: sourcename}
+    for k,v in source.iteritems():
+      tmp[k] = v
+    pass
+    config['sources'].append(tmp)
+  pass
+pass }}
+
+{{=json.dumps(config, sort_keys=True, indent=4) }}
