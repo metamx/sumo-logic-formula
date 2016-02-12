@@ -3,6 +3,10 @@
 
 {
   "api.version": "v1",
+  "collector":{
+    "collectorType": "Installable",
+    "description": "An installed collector",
+    "targetCPU": {{ salt['pillar.get']('sumologic_install:targetCPU', 10) }}
   "sources": [
     {% for sourcename,source in sources.iteritems() -%}
     {
