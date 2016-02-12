@@ -27,6 +27,12 @@ sumocollector:
     - sources:
       - sumocollector: https://collectors.sumologic.com/rest/download/deb/64
 
+/opt/SumoCollector/config/wrapper.conf:
+  file.managed:
+    - source: salt://sumologic/files/wrapper.conf
+    - watch_in:
+      - service: collector
+
 collector:
   service.running:
     - enable: True
