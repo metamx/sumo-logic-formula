@@ -7,18 +7,18 @@ def run():
   sources = __salt__['pillar.get']('sumologic:sources', {})
 
   config = {
-    api.version: "v1",
-    collector: {
-      collectorType: "Installable",
-      description: "An installed collector",
-      targetCPU: __salt__['pillar.get']('sumologic_install:targetCPU', 10)
+    'api.version': "v1",
+    'collector': {
+      'collectorType': "Installable",
+      'description': "An installed collector",
+      'targetCPU': __salt__['pillar.get']('sumologic_install:targetCPU', 10)
     },
-    sources: []
+    'sources': []
   }
 
   for sourcename,source in sources.iteritems():
     if source is mapping:
-      tmp = {name: sourcename}
+      tmp = {'name': sourcename}
       for k,v in source.iteritems():
         tmp[k] = v
       config['sources'].append(tmp)
