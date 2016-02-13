@@ -17,7 +17,7 @@ def run():
   }
 
   for sourcename,source in sources.iteritems():
-    if source is mapping:
+    if isinstance(source, dict):
       tmp = {'name': sourcename}
       for k,v in source.iteritems():
         tmp[k] = v
