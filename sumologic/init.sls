@@ -30,6 +30,7 @@ sumocollector:
 /opt/SumoCollector/config/wrapper.conf:
   file.managed:
     - source: salt://sumologic/files/wrapper.conf
+    - template: jinja
     - watch_in:
       - service: collector
 
