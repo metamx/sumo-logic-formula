@@ -29,8 +29,10 @@ sumocollector:
 
 /opt/SumoCollector/config/wrapper.conf:
   file.managed:
-    - source: salt://sumologic/files/wrapper.conf
-    - template: jinja
+    - pattern: |
+      ^wrapper.java.maxmemory=.*$
+    - repl: |
+      wrapper.java.maxmemory={{ salt["pillar.get"]("sumologic_install:javamaxmemory", 128) }}
     - watch_in:
       - service: collector
 
