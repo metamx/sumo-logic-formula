@@ -1,16 +1,27 @@
-{% set sumo_tz = salt['pillar.get']('sumologic:timezone', "America/Los_Angeles") %}
-{% set sources = salt['pillar.get']('sumologic:sources', {}) %}
+#!py
 
-{
-  "api.version": "v1",
-  "sources": [
-    {% for sourcename,source in sources.iteritems() %}
-    {
-     "name": "{{ sourcename }}",
-     {% for k,v in source.iteritems %}
-     "{{k}}": {% if v is string %}"{{v}}"{% else %}{{v}}{% endif %}}
-     {% if not loop.last %},{% endif %}
-    }{% if not loop.last %},{% endif %}
-    {% endfor %}
-    ]
+import json
+
+def run():
+  sumo_tz = __salt__['pillar.get']('sumologic:timezone', "America/Los_Angeles")
+  sources = __salt__['pillar.get']('sumologic:sources', {})
+
+  config = {
+    'api.version': "v1",
+    'collector': {
+      'collectorType': "Installable",
+      'description': "An installed collector",
+      'targetCPU': __salt__['pillar.get']('sumologic_install:targetCPU', 10)
+    },
+    'sources': []
   }
+
+  for sourcename,source in sources.iteritems():
+    if isinstance(source, dict):
+      tmp = {'name': sourcename}
+      for k,v in source.iteritems():
+        tmp[k] = v
+      config['sources'].append(tmp)
+
+  return json.dumps(config, sort_keys=True, indent=4)
+
