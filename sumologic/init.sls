@@ -9,7 +9,7 @@
     - user: root
     - group: root
     - mode: 400
-    - template: wempy
+    - template: py
     - source: salt://sumologic/files/sources.json
 
 /etc/sumo.conf:
@@ -29,7 +29,10 @@ sumocollector:
 
 /opt/SumoCollector/config/wrapper.conf:
   file.managed:
-    - source: salt://sumologic/files/wrapper.conf
+    - pattern: |
+        ^wrapper.java.maxmemory=.*$
+    - repl: |
+        wrapper.java.maxmemory={{ salt["pillar.get"]("sumologic_install:javamaxmemory", 128) }}
     - watch_in:
       - service: collector
 
