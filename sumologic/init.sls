@@ -28,11 +28,20 @@ sumocollector:
       - sumocollector: https://collectors.sumologic.com/rest/download/deb/64
 
 /opt/SumoCollector/config/wrapper.conf:
-  file.managed:
+  file.replace:
     - pattern: |
         ^wrapper.java.maxmemory=.*$
     - repl: |
         wrapper.java.maxmemory={{ salt["pillar.get"]("sumologic_install:javamaxmemory", 128) }}
+    - watch_in:
+      - service: collector
+
+/etc/init.d/collector:
+  file.replace:
+    - pattern: |
+        ^PRIORITY=.*$
+    - repl: |
+        PRIORITY={{ salt["pillar.get"]("sumologic_install:nice", 0) }}
     - watch_in:
       - service: collector
 
