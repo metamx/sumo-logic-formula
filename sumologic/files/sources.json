@@ -16,6 +16,9 @@ def run():
     'sources': []
   }
 
+  if __salt__['pillar.get']('sumologic:cutoffRelativeTime', False):
+    config['collector']['cutoffRelativeTime'] = __salt__['pillar.get']('sumologic:cutoffRelativeTime', "")
+
   for sourcename,source in sources.iteritems():
     if isinstance(source, dict):
       tmp = {'name': sourcename}
