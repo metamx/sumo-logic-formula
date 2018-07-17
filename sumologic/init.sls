@@ -36,15 +36,6 @@ sumocollector:
     - watch_in:
       - service: collector
 
-/etc/init.d/collector:
-  file.replace:
-    - pattern: |
-        ^PRIORITY=.*$
-    - repl: |
-        PRIORITY={{ salt["pillar.get"]("sumologic_install:nice", 0) }}
-    - watch_in:
-      - service: collector
-
 collector:
   service.running:
     - enable: True
